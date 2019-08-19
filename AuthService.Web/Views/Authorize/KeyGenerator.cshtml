@@ -1,0 +1,54 @@
+﻿@model AuthService.Core.Model.Authorize.AuthorizeVM
+
+@{
+    ViewData["Title"] = "KeyGenerator";
+}
+
+<h2>平台统一授权</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="KeyGeneratorResult">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MachineCode" class="control-label"></label>
+                <input asp-for="MachineCode" class="form-control" />
+                <span asp-validation-for="MachineCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimespanMonth" class="control-label"></label>
+                <input asp-for="TimespanMonth"  class="form-control"/>
+                <span asp-validation-for="TimespanMonth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AuthorizeCode" class="control-label"></label>
+                <input asp-for="AuthorizeCode" readonly="readonly" class="form-control" />
+                <span asp-validation-for="AuthorizeCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="button"  value="生成授权码" class="btn btn-default KeyGenerator" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+            $(function () {
+                $('.KeyGenerator').click(function () {
+                    var parms = $('form').serialize();
+                    $.post("/Authorize/KeyGeneratorResultAsync", parms, function (result) {
+                        console.log(result);
+                        $('#AuthorizeCode').val(result.authorizeCode);
+                    });
+                });
+            });
+            $('#MachineCode')
+    </script>
+}

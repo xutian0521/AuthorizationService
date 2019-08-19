@@ -1,0 +1,56 @@
+﻿@model AuthService.Core.Model.Authorize.HDTAuthorizeVM
+
+@{
+    ViewData["Title"] = "HDTKeyGenerator";
+}
+
+<h2>货代通授权</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MachineCode" class="control-label"></label>
+                <input asp-for="MachineCode" class="form-control" />
+                <span asp-validation-for="MachineCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientMaxCount" class="control-label"></label>
+                <input asp-for="ClientMaxCount" class="form-control" />
+                <span asp-validation-for="ClientMaxCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AuthorizeCode" class="control-label"></label>
+                <input asp-for="AuthorizeCode" readonly="readonly" class="form-control" />
+                <span asp-validation-for="AuthorizeCode" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="button" value="生成授权码" class="btn btn-default KeyGenerator" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        
+        $(function () {
+            $('.KeyGenerator').click(function () {
+                var parms = $('form').serialize();
+                $.post("/Authorize/HDTKeyGeneratorResult", parms, function (result) {
+                    console.log(result);
+                    $('#AuthorizeCode').val(result.authorizeCode);
+                });
+            });
+        });
+        $('#MachineCode')
+    </script>
+}
